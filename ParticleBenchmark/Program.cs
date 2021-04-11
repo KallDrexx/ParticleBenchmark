@@ -6,7 +6,7 @@ namespace ParticleBenchmark
 {
     public class Program
     {
-        public static int ParticleCount = 1000;
+        public static int ParticleCount = 1000000;
         
         [SimpleJob(RuntimeMoniker.NetCoreApp50, baseline: true)]
         public class Benchmark
