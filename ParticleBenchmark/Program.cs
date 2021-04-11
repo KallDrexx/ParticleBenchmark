@@ -34,6 +34,26 @@ namespace ParticleBenchmark
                     new ParticleArrayInterfaces.Modifier7(), new ParticleArrayInterfaces.Modifier8(),
                     new ParticleArrayInterfaces.Modifier9(),
                 });
+            
+            private readonly ParticleArrayInterfacesSpans.Emitter _particleArrayInterfacesSpansEmitter =
+                new(new ParticleArrayInterfacesSpans.IModifier[]
+                {
+                    new ParticleArrayInterfacesSpans.Modifier1(), new ParticleArrayInterfacesSpans.Modifier2(),
+                    new ParticleArrayInterfacesSpans.Modifier3(), new ParticleArrayInterfacesSpans.Modifier4(),
+                    new ParticleArrayInterfacesSpans.Modifier5(), new ParticleArrayInterfacesSpans.Modifier6(),
+                    new ParticleArrayInterfacesSpans.Modifier7(), new ParticleArrayInterfacesSpans.Modifier8(),
+                    new ParticleArrayInterfacesSpans.Modifier9(),
+                });
+            
+            private readonly ParticleArrayInterfacesSpans2.Emitter _particleArrayInterfacesSpans2Emitter =
+                new(new ParticleArrayInterfacesSpans2.IModifier[]
+                {
+                    new ParticleArrayInterfacesSpans2.Modifier1(), new ParticleArrayInterfacesSpans2.Modifier2(),
+                    new ParticleArrayInterfacesSpans2.Modifier3(), new ParticleArrayInterfacesSpans2.Modifier4(),
+                    new ParticleArrayInterfacesSpans2.Modifier5(), new ParticleArrayInterfacesSpans2.Modifier6(),
+                    new ParticleArrayInterfacesSpans2.Modifier7(), new ParticleArrayInterfacesSpans2.Modifier8(),
+                    new ParticleArrayInterfacesSpans2.Modifier9(),
+                });
 
             [Benchmark(Baseline = true)]
             public float SingleParticleConcrete()
@@ -75,6 +95,20 @@ namespace ParticleBenchmark
             {
                 _particleArrayInterfacesEmitter.Update(0.16f);
                 return _particleArrayInterfacesEmitter.Particles.Velocity[0].X;
+            }
+
+            [Benchmark]
+            public float ParticleArrayInterfacesWithSpans()
+            {
+                _particleArrayInterfacesSpansEmitter.Update(0.16f);
+                return _particleArrayInterfacesSpansEmitter.Particles.Velocity[0].X;
+            }
+
+            [Benchmark]
+            public float ParticleArrayInterfacesWithSpans2()
+            {
+                _particleArrayInterfacesSpans2Emitter.Update(0.16f);
+                return _particleArrayInterfacesSpans2Emitter.Particles.GetVector2Values("Velocity")[0].X;
             }
         }
         
