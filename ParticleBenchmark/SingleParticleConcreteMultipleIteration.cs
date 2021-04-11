@@ -3,6 +3,10 @@ using System.Numerics;
 
 namespace ParticleBenchmark
 {
+    /// <summary>
+    /// Single holistic particle struct, each modification is hard coded.  Each modification is run on all particles
+    /// before moving onto the next modification section.
+    /// </summary>
     public static class SingleParticleConcreteMultipleIteration
     {
         public struct Particle

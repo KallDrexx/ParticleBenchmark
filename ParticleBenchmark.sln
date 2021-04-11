@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleBenchmark", "ParticleBenchmark\ParticleBenchmark.csproj", "{6D9F6805-FCD9-4F27-8252-40A212E4ADEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleBenchmark.Tests", "ParticleBenchmark.Tests\ParticleBenchmark.Tests.csproj", "{6F7D2091-5DBD-49E9-BA7D-3779710AEFBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{6D9F6805-FCD9-4F27-8252-40A212E4ADEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9F6805-FCD9-4F27-8252-40A212E4ADEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D9F6805-FCD9-4F27-8252-40A212E4ADEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F7D2091-5DBD-49E9-BA7D-3779710AEFBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F7D2091-5DBD-49E9-BA7D-3779710AEFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F7D2091-5DBD-49E9-BA7D-3779710AEFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F7D2091-5DBD-49E9-BA7D-3779710AEFBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

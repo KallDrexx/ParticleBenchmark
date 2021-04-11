@@ -3,6 +3,10 @@ using System.Numerics;
 
 namespace ParticleBenchmark
 {
+    /// <summary>
+    /// Single holistic particle struct.  All modification logic is hard coded in, and each particle
+    /// has all it's modifications run before moving onto the next particle
+    /// </summary>
     public static class SingleParticleConcrete
     {
         public struct Particle
@@ -47,13 +51,18 @@ namespace ParticleBenchmark
 
         public class Emitter
         {
-            public readonly Particle[] _particles = new Particle[Program.ParticleCount];
+            public float MaxParticleLifeTime { get; set; } = 5f;
+            public float SizeChange { get; set; } = 5f;
+            public float EndValue { get; set; } = 0f;
+            public float Drag { get; set; } = 0.1f;
+            
+            public readonly Particle[] Particles = new Particle[Program.ParticleCount];
 
             public Emitter()
             {
-                for (var x = 0; x < _particles.Length; x++)
+                for (var x = 0; x < Particles.Length; x++)
                 {
-                    _particles[x] = new Particle
+                    Particles[x] = new Particle
                     {
                         IsAlive = true,
                         TimeAlive = 0,
@@ -82,58 +91,57 @@ namespace ParticleBenchmark
 
             public void Update(float timeSinceLastFrame)
             {
-                for (var x = 0; x < _particles.Length; x++)
+                for (var x = 0; x < Particles.Length; x++)
                 {
-                    var particle = _particles[x];
-                    particle.TimeAlive += timeSinceLastFrame;
+                    Particles[x].TimeAlive += timeSinceLastFrame;
 
                     // modifiers
                     {
-                        particle.TextureSectionIndex = (byte) ((particle.TimeAlive / 1000) * 10);
+                        Particles[x].TextureSectionIndex = (byte) ((Particles[x].TimeAlive / MaxParticleLifeTime) * 10);
                     }
                     {
-                        particle.Velocity += timeSinceLastFrame * new Vector2(5, 5);
+                        Particles[x].Velocity += timeSinceLastFrame * new Vector2(SizeChange, SizeChange);
                     }
                     {
-                        particle.Size += timeSinceLastFrame * new Vector2(5, 5);
+                        Particles[x].Size += timeSinceLastFrame * new Vector2(SizeChange, SizeChange);
                     }
                     {
-                        particle.Velocity -= 0.1f * particle.Velocity * timeSinceLastFrame;
+                        Particles[x].Velocity -= Drag * Particles[x].Velocity * timeSinceLastFrame;
                     }
                     {
-                        particle.CurrentRed -= (((particle.InitialRed - 0) / 1000f) *
+                        Particles[x].CurrentRed -= (((Particles[x].InitialRed - EndValue) / MaxParticleLifeTime) *
                                                 timeSinceLastFrame);
-                        particle.CurrentGreen -= (((particle.InitialGreen - 0) / 1000f) *
+                        Particles[x].CurrentGreen -= (((Particles[x].InitialGreen - EndValue) / MaxParticleLifeTime) *
                                                   timeSinceLastFrame);
-                        particle.CurrentBlue -= (((particle.InitialBlue - 0) / 1000f) *
+                        Particles[x].CurrentBlue -= (((Particles[x].InitialBlue - EndValue) / MaxParticleLifeTime) *
                                                  timeSinceLastFrame);
-                        particle.CurrentAlpha -= (((particle.InitialAlpha - 0) / 1000f) *
+                        Particles[x].CurrentAlpha -= (((Particles[x].InitialAlpha - EndValue) / MaxParticleLifeTime) *
                                                   timeSinceLastFrame);
                     }
                     {
 
-                        var width = (((particle.InitialSize.X - 0) / 1000f) *
+                        var width = (((Particles[x].InitialSize.X - EndValue) / MaxParticleLifeTime) *
                                      timeSinceLastFrame);
-                        var height = (((particle.InitialSize.Y - 0) / 1000f) *
+                        var height = (((Particles[x].InitialSize.Y - EndValue) / MaxParticleLifeTime) *
                                       timeSinceLastFrame);
-                        particle.Size.X -= width;
-                        particle.Size.Y -= height;
+                        Particles[x].Size.X -= width;
+                        Particles[x].Size.Y -= height;
                     }
                     {
 
-                        if (particle.Velocity != Vector2.Zero)
+                        if (Particles[x].Velocity != Vector2.Zero)
                         {
-                            particle.RotationInRadians = (float) Math.Atan2(particle.Velocity.Y, particle.Velocity.X);
+                            Particles[x].RotationInRadians = (float) Math.Atan2(Particles[x].Velocity.Y, Particles[x].Velocity.X);
                         }
                     }
 
                     // position modifier
 
-                    particle.ReferencePosition += particle.Velocity * timeSinceLastFrame;
-                    particle.Position.X = particle.ReferencePosition.X;
-                    particle.Position.Y = particle.ReferencePosition.Y + particle.Altitude;
+                    Particles[x].ReferencePosition += Particles[x].Velocity * timeSinceLastFrame;
+                    Particles[x].Position.X = Particles[x].ReferencePosition.X;
+                    Particles[x].Position.Y = Particles[x].ReferencePosition.Y + Particles[x].Altitude;
 
-                    particle.RotationInRadians += particle.RotationalVelocityInRadians * timeSinceLastFrame;
+                    Particles[x].RotationInRadians += Particles[x].RotationalVelocityInRadians * timeSinceLastFrame;
                 }
             }
         }

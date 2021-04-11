@@ -3,6 +3,10 @@ using System.Numerics;
 
 namespace ParticleBenchmark
 {
+    /// <summary>
+    /// Single holistic particle struct, all modification is contained in IModifier implementations. Each
+    /// IModifier loops through all particles and performs a single modification.  
+    /// </summary>
     public static class SingleParticleInterfaces
     {
         public struct Particle
@@ -47,32 +51,22 @@ namespace ParticleBenchmark
 
         public class Emitter
         {
-            public readonly Particle[] _particles = new Particle[Program.ParticleCount];
+            public static float MaxParticleLifeTime { get; set; } = 5f;
+            public static float SizeChange { get; set; } = 5f;
+            public static float EndValue { get; set; } = 0f;
+            public static float Drag { get; set; } = 0.1f;
+            
+            public readonly Particle[] Particles = new Particle[Program.ParticleCount];
 
             private readonly IModifier[] _modifiers;
 
-            public Emitter(int count)
+            public Emitter(IModifier[] modifiers)
             {
-                if (count == 9)
-                {
-                    _modifiers = new IModifier[]
-                    {
-                        new Modifier1(), new Modifier2(), new Modifier3(), new Modifier4(), new Modifier5(),
-                        new Modifier6(), new Modifier7(), new Modifier8(), new Modifier9(),
-                    };
-                }
-                else
-                {
-                    _modifiers = new IModifier[]
-                    {
-                        new Modifier1(), new Modifier2(), new Modifier3(), new Modifier4(), new Modifier5(),
-                        new Modifier6(), new Modifier7(), new Modifier8(),
-                    };
-                }
+                _modifiers = modifiers;
                 
-                for (var x = 0; x < _particles.Length; x++)
+                for (var x = 0; x < Particles.Length; x++)
                 {
-                    _particles[x] = new Particle
+                    Particles[x] = new Particle
                     {
                         IsAlive = true,
                         TimeAlive = 0,
@@ -101,14 +95,14 @@ namespace ParticleBenchmark
 
             public void Update(float timeSinceLastFrame)
             {
-                for (var x = 0; x < _particles.Length; x++)
+                for (var x = 0; x < Particles.Length; x++)
                 {
-                    _particles[x].TimeAlive += timeSinceLastFrame;
+                    Particles[x].TimeAlive += timeSinceLastFrame;
                 }
                 
                 foreach (var modifier in _modifiers)
                 {
-                    modifier.Modify(timeSinceLastFrame, _particles);
+                    modifier.Modify(timeSinceLastFrame, Particles);
                 }
             }
         }
@@ -124,7 +118,7 @@ namespace ParticleBenchmark
             {
                 for (var x = 0; x < particles.Length; x++)
                 {
-                    particles[x].TextureSectionIndex = (byte) ((particles[x].TimeAlive / 1000) * 10);
+                    particles[x].TextureSectionIndex = (byte) ((particles[x].TimeAlive / Emitter.MaxParticleLifeTime) * 10);
                 }
             }
         }
@@ -135,7 +129,7 @@ namespace ParticleBenchmark
             {
                 for (var x = 0; x < particles.Length; x++)
                 {
-                    particles[x].Velocity += timeSinceLastFrame * new Vector2(5, 5);
+                    particles[x].Velocity += timeSinceLastFrame * new Vector2(Emitter.SizeChange, Emitter.SizeChange);
                 }
             }
         }
@@ -145,7 +139,7 @@ namespace ParticleBenchmark
             public void Modify(float timeSinceLastFrame, Particle[] particles)
             {
                 for (var x = 0; x < particles.Length; x++)
-                    particles[x].Size += timeSinceLastFrame * new Vector2(5, 5);
+                    particles[x].Size += timeSinceLastFrame * new Vector2(Emitter.SizeChange, Emitter.SizeChange);
             }
         }
         
@@ -155,7 +149,7 @@ namespace ParticleBenchmark
             {
                 for (var x = 0; x < particles.Length; x++)
                 {
-                    particles[x].Velocity -= 0.1f * particles[x].Velocity * timeSinceLastFrame;
+                    particles[x].Velocity -= Emitter.Drag * particles[x].Velocity * timeSinceLastFrame;
                 }
             }
         }
@@ -166,13 +160,13 @@ namespace ParticleBenchmark
             {
                 for (var x = 0; x < particles.Length; x++)
                 {
-                    particles[x].CurrentRed -= (((particles[x].InitialRed - 0) / 1000f) *
+                    particles[x].CurrentRed -= (((particles[x].InitialRed - Emitter.EndValue) / Emitter.MaxParticleLifeTime) *
                                                 timeSinceLastFrame);
-                    particles[x].CurrentGreen -= (((particles[x].InitialGreen - 0) / 1000f) *
+                    particles[x].CurrentGreen -= (((particles[x].InitialGreen - Emitter.EndValue) / Emitter.MaxParticleLifeTime) *
                                                   timeSinceLastFrame);
-                    particles[x].CurrentBlue -= (((particles[x].InitialBlue - 0) / 1000f) *
+                    particles[x].CurrentBlue -= (((particles[x].InitialBlue - Emitter.EndValue) / Emitter.MaxParticleLifeTime) *
                                                  timeSinceLastFrame);
-                    particles[x].CurrentAlpha -= (((particles[x].InitialAlpha - 0) / 1000f) *
+                    particles[x].CurrentAlpha -= (((particles[x].InitialAlpha - Emitter.EndValue) / Emitter.MaxParticleLifeTime) *
                                                   timeSinceLastFrame);
                 }
             }
@@ -184,9 +178,9 @@ namespace ParticleBenchmark
             {
                 for (var x = 0; x < particles.Length; x++)
                 {
-                    var width = (((particles[x].InitialSize.X - 0) / 1000f) *
+                    var width = (((particles[x].InitialSize.X - Emitter.EndValue) / Emitter.MaxParticleLifeTime) *
                                  timeSinceLastFrame);
-                    var height = (((particles[x].InitialSize.Y - 0) / 1000f) *
+                    var height = (((particles[x].InitialSize.Y - Emitter.EndValue) / Emitter.MaxParticleLifeTime) *
                                   timeSinceLastFrame);
                     particles[x].Size.X -= width;
                     particles[x].Size.Y -= height;
