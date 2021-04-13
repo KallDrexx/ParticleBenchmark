@@ -13,7 +13,7 @@ namespace ParticleBenchmark
         public struct Particle
         {
             public bool IsAlive;
-            public byte TextureSectionIndex;
+            public int TextureSectionIndex;
             public float SizeX;
             public float SizeY;
             public float InitialSizeX;
@@ -27,10 +27,10 @@ namespace ParticleBenchmark
             public float TimeAlive;
             public float RotationInRadians;
             public float RotationalVelocityInRadians;
-            public byte InitialRed;
-            public byte InitialGreen;
-            public byte InitialBlue;
-            public byte InitialAlpha;
+            public int InitialRed;
+            public int InitialGreen;
+            public int InitialBlue;
+            public int InitialAlpha;
             public float CurrentRed;
             public float CurrentGreen;
             public float CurrentBlue;
@@ -50,6 +50,7 @@ namespace ParticleBenchmark
             public readonly Particle[] Particles = new Particle[Program.ParticleCount];
             private readonly ReadWriteBuffer<Particle> _particleBuffer;
             private readonly Shader _shader;
+            private readonly GraphicsDevice _gpu;
 
             public Emitter()
             {
@@ -86,7 +87,8 @@ namespace ParticleBenchmark
                     };
                 }
 
-                _particleBuffer = Gpu.Default.AllocateReadWriteBuffer<Particle>(Program.ParticleCount);
+                _gpu = Gpu.Default;
+                _particleBuffer = _gpu.AllocateReadWriteBuffer<Particle>(Program.ParticleCount);
 
                 _shader = new Shader(_particleBuffer, MaxParticleLifeTime, SizeChange, Drag, EndValue);
             }
@@ -95,7 +97,7 @@ namespace ParticleBenchmark
             {
                 _particleBuffer.CopyFrom(Particles);
                 
-                Gpu.Default.For(Program.ParticleCount, _shader);
+                _gpu.For(Program.ParticleCount, _shader);
                 
                 _particleBuffer.CopyTo(Particles);
             }
@@ -123,7 +125,7 @@ namespace ParticleBenchmark
                     const float timeSinceLastFrame = 0.16f;
                     _buffer[ThreadIds.X].TimeAlive += timeSinceLastFrame;
                     _buffer[ThreadIds.X].TextureSectionIndex =
-                        (byte) (_buffer[ThreadIds.X].TimeAlive / MaxParticleLifeTime);
+                        (int) (_buffer[ThreadIds.X].TimeAlive / MaxParticleLifeTime);
                     _buffer[ThreadIds.X].VelocityX += timeSinceLastFrame * SizeChange;
                     _buffer[ThreadIds.X].VelocityY += timeSinceLastFrame * SizeChange;
                     _buffer[ThreadIds.X].VelocityX -= Drag * _buffer[ThreadIds.X].VelocityX * timeSinceLastFrame;

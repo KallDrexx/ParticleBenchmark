@@ -80,49 +80,49 @@ namespace ParticleBenchmark
                 _singeParticleInterfaceEmitter.Update(0.16f);
                 return _singeParticleInterfaceEmitter.Particles[0].Velocity.X;
             }
-
+            
             [Benchmark]
             public float SingleParticleMultipleIteration()
             {
                 _singleMultipleIteration.Update(0.16f);
                 return _singleMultipleIteration._particles[0].Velocity.X;
             }
-
+            
             [Benchmark]
             public float ParticleArrayConcrete()
             {
                 _particleArrayConcreteEmitter.Update(0.16f);
                 return _particleArrayConcreteEmitter.Particles.Velocity[0].X;
             }
-
+            
             [Benchmark]
             public float ParticleArrayConcreteIterations()
             {
                 _particleArrayConcreteIterationsEmitter.Update(0.16f);
                 return _particleArrayConcreteIterationsEmitter.Particles.Velocity[0].X;
             }
-
+            
             [Benchmark]
             public float ParticleArrayInterfaces()
             {
                 _particleArrayInterfacesEmitter.Update(0.16f);
                 return _particleArrayInterfacesEmitter.Particles.Velocity[0].X;
             }
-
+            
             [Benchmark]
             public float ParticleArrayInterfacesWithSpans()
             {
                 _particleArrayInterfacesSpansEmitter.Update(0.16f);
                 return _particleArrayInterfacesSpansEmitter.Particles.Velocity[0].X;
             }
-
+            
             [Benchmark]
             public float ParticleArrayInterfacesWithSpans2()
             {
                 _particleArrayInterfacesSpans2Emitter.Update(0.16f);
                 return _particleArrayInterfacesSpans2Emitter.Particles.GetVector2Values("Velocity")[0].X;
             }
-
+            
             [Benchmark]
             public float ParticleArrayInterfacesWithSimd()
             {
@@ -140,11 +140,7 @@ namespace ParticleBenchmark
         
         static void Main(string[] args)
         {
-            // BenchmarkRunner.Run<Program.Benchmark>();
-
-            var compute = new ComputeShaderParticles.Emitter();
-            compute.Update(0.16f);
+            BenchmarkRunner.Run<Program.Benchmark>();
         }
-        
     }
 }

@@ -305,7 +305,7 @@ namespace ParticleBenchmark.Tests
                 singleParticleConcreteEmitter.Particles[x].ReferencePosition.Y.ShouldBe(particleArrayInterfacesSimdEmitter.Particles[x].ReferencePositionY);
                 singleParticleConcreteEmitter.Particles[x].TimeAlive.ShouldBe(particleArrayInterfacesSimdEmitter.Particles[x].TimeAlive);
                 singleParticleConcreteEmitter.Particles[x].RotationInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.Particles[x].RotationInRadians);
-                singleParticleConcreteEmitter.Particles[x].TextureSectionIndex.ShouldBe(particleArrayInterfacesSimdEmitter.Particles[x].TextureSectionIndex);
+                ((int)singleParticleConcreteEmitter.Particles[x].TextureSectionIndex).ShouldBe(particleArrayInterfacesSimdEmitter.Particles[x].TextureSectionIndex);
                 singleParticleConcreteEmitter.Particles[x].RotationalVelocityInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.Particles[x].RotationalVelocityInRadians); 
             }
         }
