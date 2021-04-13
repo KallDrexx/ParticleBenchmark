@@ -88,80 +88,71 @@ namespace ParticleBenchmark
             {
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
-                    particle.TimeAlive += timeSinceLastFrame;
+                    _particles[x].TimeAlive += timeSinceLastFrame;
                 }
 
                 // modifiers
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
-                        particle.TextureSectionIndex = (byte) ((particle.TimeAlive / 1000) * 10);
+                        _particles[x].TextureSectionIndex = (byte) ((_particles[x].TimeAlive / 1000) * 10);
                     }
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
-                        particle.Velocity += timeSinceLastFrame * new Vector2(5, 5);
+                        _particles[x].Velocity += timeSinceLastFrame * new Vector2(5, 5);
                     }
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
-                        particle.Size += timeSinceLastFrame * new Vector2(5, 5);
+                        _particles[x].Size += timeSinceLastFrame * new Vector2(5, 5);
                     }
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
-                        particle.Velocity -= 0.1f * particle.Velocity * timeSinceLastFrame;
+                        _particles[x].Velocity -= 0.1f * _particles[x].Velocity * timeSinceLastFrame;
                     }
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
-                        particle.CurrentRed -= (((particle.InitialRed - 0) / 1000f) *
+                        _particles[x].CurrentRed -= (((_particles[x].InitialRed - 0) / 1000f) *
                                                 timeSinceLastFrame);
-                        particle.CurrentGreen -= (((particle.InitialGreen - 0) / 1000f) *
+                        _particles[x].CurrentGreen -= (((_particles[x].InitialGreen - 0) / 1000f) *
                                                   timeSinceLastFrame);
-                        particle.CurrentBlue -= (((particle.InitialBlue - 0) / 1000f) *
+                        _particles[x].CurrentBlue -= (((_particles[x].InitialBlue - 0) / 1000f) *
                                                  timeSinceLastFrame);
-                        particle.CurrentAlpha -= (((particle.InitialAlpha - 0) / 1000f) *
+                        _particles[x].CurrentAlpha -= (((_particles[x].InitialAlpha - 0) / 1000f) *
                                                   timeSinceLastFrame);
                     }
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
 
-                        var width = (((particle.InitialSize.X - 0) / 1000f) *
+                        var width = (((_particles[x].InitialSize.X - 0) / 1000f) *
                                      timeSinceLastFrame);
-                        var height = (((particle.InitialSize.Y - 0) / 1000f) *
+                        var height = (((_particles[x].InitialSize.Y - 0) / 1000f) *
                                       timeSinceLastFrame);
-                        particle.Size.X -= width;
-                        particle.Size.Y -= height;
+                        _particles[x].Size.X -= width;
+                        _particles[x].Size.Y -= height;
                     }
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
                     {
-
-                        if (particle.Velocity != Vector2.Zero)
+                        if (_particles[x].Velocity != Vector2.Zero)
                         {
-                            particle.RotationInRadians = (float) Math.Atan2(particle.Velocity.Y, particle.Velocity.X);
+                            _particles[x].RotationInRadians = (float) Math.Atan2(_particles[x].Velocity.Y, _particles[x].Velocity.X);
                         }
                     }
                 }
@@ -170,16 +161,14 @@ namespace ParticleBenchmark
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
-                    particle.ReferencePosition += particle.Velocity * timeSinceLastFrame;
-                    particle.Position.X = particle.ReferencePosition.X;
-                    particle.Position.Y = particle.ReferencePosition.Y + particle.Altitude;
+                    _particles[x].ReferencePosition += _particles[x].Velocity * timeSinceLastFrame;
+                    _particles[x].Position.X = _particles[x].ReferencePosition.X;
+                    _particles[x].Position.Y = _particles[x].ReferencePosition.Y + _particles[x].Altitude;
                 }
 
                 for (var x = 0; x < _particles.Length; x++)
                 {
-                    var particle = _particles[x];
-                    particle.RotationInRadians += particle.RotationalVelocityInRadians * timeSinceLastFrame;
+                    _particles[x].RotationInRadians += _particles[x].RotationalVelocityInRadians * timeSinceLastFrame;
                 }
             }
         }
