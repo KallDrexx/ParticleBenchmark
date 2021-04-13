@@ -134,13 +134,17 @@ namespace ParticleBenchmark
             public float ComputeShader()
             {
                 _computeShaderEmitter.Update(0.16f);
-                return _computeShaderEmitter.ParticleProperties["VelocityX"][0];
+                return _computeShaderEmitter.Particles[0].VelocityX;
             }
         }
         
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<Program.Benchmark>();
+            // BenchmarkRunner.Run<Program.Benchmark>();
+
+            var compute = new ComputeShaderParticles.Emitter();
+            compute.Update(0.16f);
         }
+        
     }
 }
