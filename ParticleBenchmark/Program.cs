@@ -54,6 +54,16 @@ namespace ParticleBenchmark
                     new ParticleArrayInterfacesSpans2.Modifier7(), new ParticleArrayInterfacesSpans2.Modifier8(),
                     new ParticleArrayInterfacesSpans2.Modifier9(),
                 });
+            
+            private readonly ParticleArrayInterfacesSimd.Emitter _particleArrayInterfacesSimdEmitter =
+                new(new ParticleArrayInterfacesSimd.IModifier[]
+                {
+                    new ParticleArrayInterfacesSimd.Modifier1(), new ParticleArrayInterfacesSimd.Modifier2(),
+                    new ParticleArrayInterfacesSimd.Modifier3(), new ParticleArrayInterfacesSimd.Modifier4(),
+                    new ParticleArrayInterfacesSimd.Modifier5(), new ParticleArrayInterfacesSimd.Modifier6(),
+                    new ParticleArrayInterfacesSimd.Modifier7(), new ParticleArrayInterfacesSimd.Modifier8(),
+                    new ParticleArrayInterfacesSimd.Modifier9(),
+                });
 
             [Benchmark(Baseline = true)]
             public float SingleParticleConcrete()
@@ -109,6 +119,13 @@ namespace ParticleBenchmark
             {
                 _particleArrayInterfacesSpans2Emitter.Update(0.16f);
                 return _particleArrayInterfacesSpans2Emitter.Particles.GetVector2Values("Velocity")[0].X;
+            }
+
+            [Benchmark]
+            public float ParticleArrayInterfacesWithSimd()
+            {
+                _particleArrayInterfacesSimdEmitter.Update(0.16f);
+                return _particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("VelocityX")[0];
             }
         }
         

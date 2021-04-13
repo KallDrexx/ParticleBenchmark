@@ -5,6 +5,11 @@ namespace ParticleBenchmark.Tests
 {
     public class ValueValidator
     {
+        public ValueValidator()
+        {
+            Program.ParticleCount = 100;
+        }
+        
         [Fact]
         public void SingleParticleConcrete_Equals_SingleParticleInterface()
         {
@@ -222,6 +227,50 @@ namespace ParticleBenchmark.Tests
                 singleParticleConcreteEmitter.Particles[x].RotationInRadians.ShouldBe(particleArrayInterfacesSpansEmitter.Particles.GetFloatValues("RotationInRadians")[x]);
                 singleParticleConcreteEmitter.Particles[x].TextureSectionIndex.ShouldBe(particleArrayInterfacesSpansEmitter.Particles.GetByteValues("TextureSectionIndex")[x]);
                 singleParticleConcreteEmitter.Particles[x].RotationalVelocityInRadians.ShouldBe(particleArrayInterfacesSpansEmitter.Particles.GetFloatValues("RotationalVelocityInRadians")[x]); 
+            }
+        }
+
+        [Fact]
+        public void SingleParticleConcrete_Equals_ParticleArrayInterfacesSimd()
+        {
+            SingleParticleConcrete.Emitter singleParticleConcreteEmitter = new();
+            ParticleArrayInterfacesSimd.Emitter particleArrayInterfacesSimdEmitter = new(new ParticleArrayInterfacesSimd.IModifier[]
+            {
+                new ParticleArrayInterfacesSimd.Modifier1(), new ParticleArrayInterfacesSimd.Modifier2(), 
+                new ParticleArrayInterfacesSimd.Modifier3(), new ParticleArrayInterfacesSimd.Modifier4(), 
+                new ParticleArrayInterfacesSimd.Modifier5(), new ParticleArrayInterfacesSimd.Modifier6(), 
+                new ParticleArrayInterfacesSimd.Modifier7(), new ParticleArrayInterfacesSimd.Modifier8(), 
+                new ParticleArrayInterfacesSimd.Modifier9(),
+            });
+            
+            for (var x = 0; x < 10; x++)
+            {
+                singleParticleConcreteEmitter.Update(0.16f);
+                particleArrayInterfacesSimdEmitter.Update(0.16f);
+            }
+
+            for (var x = 0; x < Program.ParticleCount; x++)
+            {
+                singleParticleConcreteEmitter.Particles[x].TimeAlive.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("TimeAlive")[x]);
+                singleParticleConcreteEmitter.Particles[x].Altitude.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("Altitude")[x]);
+                singleParticleConcreteEmitter.Particles[x].Position.X.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("PositionX")[x]);
+                singleParticleConcreteEmitter.Particles[x].Position.Y.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("PositionY")[x]);
+                singleParticleConcreteEmitter.Particles[x].Size.X.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("SizeX")[x]);
+                singleParticleConcreteEmitter.Particles[x].Size.Y.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("SizeY")[x]);
+                singleParticleConcreteEmitter.Particles[x].Velocity.X.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("VelocityX")[x]);
+                singleParticleConcreteEmitter.Particles[x].Velocity.Y.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("VelocityY")[x]);
+                singleParticleConcreteEmitter.Particles[x].AltitudeVelocity.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("AltitudeVelocity")[x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentAlpha.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("CurrentAlpha")[x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentBlue.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("CurrentBlue")[x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentGreen.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("CurrentGreen")[x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentRed.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("CurrentRed")[x]);
+                singleParticleConcreteEmitter.Particles[x].ReferencePosition.X.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("ReferencePositionX")[x]);
+                singleParticleConcreteEmitter.Particles[x].ReferencePosition.Y.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("ReferencePositionY")[x]);
+                singleParticleConcreteEmitter.Particles[x].TimeAlive.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("TimeAlive")[x]);
+                singleParticleConcreteEmitter.Particles[x].AltitudeBounceCount.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetIntValues("AltitudeBounceCount")[x]);
+                singleParticleConcreteEmitter.Particles[x].RotationInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("RotationInRadians")[x]);
+                singleParticleConcreteEmitter.Particles[x].TextureSectionIndex.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetByteValues("TextureSectionIndex")[x]);
+                singleParticleConcreteEmitter.Particles[x].RotationalVelocityInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("RotationalVelocityInRadians")[x]); 
             }
         }
     }
