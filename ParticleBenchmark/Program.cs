@@ -65,6 +65,8 @@ namespace ParticleBenchmark
                     new ParticleArrayInterfacesSimd.Modifier9(),
                 });
 
+            private readonly ComputeShaderParticles.Emitter _computeShaderEmitter = new();
+
             [Benchmark(Baseline = true)]
             public float SingleParticleConcrete()
             {
@@ -126,6 +128,13 @@ namespace ParticleBenchmark
             {
                 _particleArrayInterfacesSimdEmitter.Update(0.16f);
                 return _particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("VelocityX")[0];
+            }
+            
+            [Benchmark]
+            public float ComputeShader()
+            {
+                _computeShaderEmitter.Update(0.16f);
+                return _computeShaderEmitter.ParticleProperties["VelocityX"][0];
             }
         }
         

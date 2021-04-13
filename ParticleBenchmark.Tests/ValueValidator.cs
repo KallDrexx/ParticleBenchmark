@@ -273,5 +273,41 @@ namespace ParticleBenchmark.Tests
                 singleParticleConcreteEmitter.Particles[x].RotationalVelocityInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.Particles.GetFloatValues("RotationalVelocityInRadians")[x]); 
             }
         }
+
+        [Fact]
+        public void SingleParticleConcrete_Equals_ComputeShaderParticles()
+        {
+            SingleParticleConcrete.Emitter singleParticleConcreteEmitter = new();
+            ComputeShaderParticles.Emitter particleArrayInterfacesSimdEmitter = new();
+            
+            for (var x = 0; x < 10; x++)
+            {
+                singleParticleConcreteEmitter.Update(0.16f);
+                particleArrayInterfacesSimdEmitter.Update(0.16f);
+            }
+
+            for (var x = 0; x < Program.ParticleCount; x++)
+            {
+                singleParticleConcreteEmitter.Particles[x].TimeAlive.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["TimeAlive"][x]);
+                singleParticleConcreteEmitter.Particles[x].Altitude.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["Altitude"][x]);
+                singleParticleConcreteEmitter.Particles[x].Position.X.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["PositionX"][x]);
+                singleParticleConcreteEmitter.Particles[x].Position.Y.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["PositionY"][x]);
+                singleParticleConcreteEmitter.Particles[x].Size.X.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["SizeX"][x]);
+                singleParticleConcreteEmitter.Particles[x].Size.Y.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["SizeY"][x]);
+                singleParticleConcreteEmitter.Particles[x].Velocity.X.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["VelocityX"][x]);
+                singleParticleConcreteEmitter.Particles[x].Velocity.Y.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["VelocityY"][x]);
+                singleParticleConcreteEmitter.Particles[x].AltitudeVelocity.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["AltitudeVelocity"][x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentAlpha.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["CurrentAlpha"][x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentBlue.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["CurrentBlue"][x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentGreen.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["CurrentGreen"][x]);
+                singleParticleConcreteEmitter.Particles[x].CurrentRed.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["CurrentRed"][x]);
+                singleParticleConcreteEmitter.Particles[x].ReferencePosition.X.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["ReferencePositionX"][x]);
+                singleParticleConcreteEmitter.Particles[x].ReferencePosition.Y.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["ReferencePositionY"][x]);
+                singleParticleConcreteEmitter.Particles[x].TimeAlive.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["TimeAlive"][x]);
+                singleParticleConcreteEmitter.Particles[x].RotationInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["RotationInRadians"][x]);
+                singleParticleConcreteEmitter.Particles[x].TextureSectionIndex.ShouldBe(particleArrayInterfacesSimdEmitter.TextureSectionIndexArray[x]);
+                singleParticleConcreteEmitter.Particles[x].RotationalVelocityInRadians.ShouldBe(particleArrayInterfacesSimdEmitter.ParticleProperties["RotationalVelocityInRadians"][x]); 
+            }
+        }
     }
 }
